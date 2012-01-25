@@ -17,4 +17,4 @@ My Answers are below:
     In my project, to improve performance, we adopt buffering and asynchronous pattern.
     This is a so much simple emulation of it.
 
-
+* I'm not sensitive for some cases, such as doubled space "a  b" should be ["a","","","b"] or ["a","","b"]
