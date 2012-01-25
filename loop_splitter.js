@@ -12,4 +12,4 @@ var split = function(input) {
   return result;
 };
 
-p(split("ab cd ef"));
+console.log(split("ab cd ef"));

@@ -1,24 +1,38 @@
-var worker = function (str, flash) {
+var worker = function () {
   var result = [];
-  return (function() {
-    result.push(str);
+  return function(chunk, flash) {
+    result = result.concat(chunk);
     if (flash) {
       console.log(result);
     }
-  })(str, flash);
+  };
+};
+
+var chunker = function () {
+  var _worker = worker(), chunksize=3,chunk_holder=[];
+  return function(input, flash) {
+    // buffering
+    chunk_holder.push(input);
+    if (flash || chunk_holder.length === chunksize){
+      _worker(chunk_holder, flash);
+      chunk_holder=[];
+    }
+  };
 };
 
 var split = function(input) {
-  var i=0, str="";
-  for(;i<input.length; i+=1) {
-    if (input.charAt(i)===" ") {
-      setTimeout(worker(str), 10);
+  var i=0, str="", _chunker=chunker();
+  for(;i<input.length; i+=1) {    
+    if (input.charAt(i)===" ") {      
+      // async
+      setTimeout(_chunker(str), 1);
       str="";
-    } else {
+    } else {      
       str+=input.charAt(i);
     }
   }
-  setTimeout(worker(str, true), 10);
+  // async
+  setTimeout(_chunker(str,true), 1);
 };
 
-p(split("ab cd ef"));
+split("a bc def ghij klmno pqrstu z");
