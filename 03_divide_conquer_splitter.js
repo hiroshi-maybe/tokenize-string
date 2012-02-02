@@ -15,7 +15,7 @@ var split = function (input) {
   
   var tree = function _tree(_input) {
     var pivot = Math.floor(_input.length/2),_left,_right
-    , merge = function(left,right) {
+    , join_merge = function(left,right) {
       var right_head="",result;
       // judge array or not
       // @todo better judge method
@@ -37,6 +37,21 @@ var split = function (input) {
         result[left.length-1]+=right_head;
         return result;
       }
+    }, concat_merge = function(left,right) {
+      if(left.shift===undefined && right.shift===undefined) {
+	// "a", "b" -> "[a,b]"
+        return [left,right];
+      } else if (left.shift===undefined && !(right.shift===undefined)) {
+	// "a", ["b","c"] -> ["a","b","c"]
+        return [left].concat(right);
+      } else if (!(left.shift===undefined) && right.shift===undefined) {
+	// ["a","b"], "c" -> ["a","b","c"]
+        left.push(right);
+        return left;
+      } else {
+	// ["a","b"], ["c","d"] -> ["a","b","c","d"]
+        return left.concat(right);
+      }
     };
 
     if (_input.length == 1) {
@@ -49,14 +64,14 @@ var split = function (input) {
 	return [_tree(_input.substr(0,pivot)),""];
       } else {
         // "a b" -> ["a","b"]
-        return [_tree(_input.substr(0,pivot)),
-                _tree(_input.substr(pivot+1,_input.length-pivot-1))];
+        return concat_merge(_tree(_input.substr(0,pivot)),
+                _tree(_input.substr(pivot+1,_input.length-pivot-1)));
       }
     } else {
       // "a b c" -> "a " | "b c"
       _left = _tree(_input.substr(0,pivot));
       _right = _tree(_input.substr(pivot,_input.length-pivot));
-      return merge(_left, _right);
+      return join_merge(_left, _right);
     }
   };
   return tree(input);
