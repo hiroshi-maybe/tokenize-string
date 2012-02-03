@@ -58,21 +58,19 @@ var split = function (input) {
       }
     };
 
-    if (_input.length == 1) {
+    if (_input.length == 0) {
+      return "";
+    }
+    else if (_input.length == 1) {
       return _input===" " ? "" : _input;
     }
 
     if (_input.charAt(pivot) === " ") {
-      if(pivot===1 && _input.length===2) {
-        // "a " -> "a"  ["a",""]
-	return [_tree(_input.substr(0,pivot)),""];
-      } else {
-        // "ab cd" -> ["ab","cd"] 
+        // "ab cd" -> "ab"|"cd" -> ["ab","cd"]
         return concat_merge(_tree(_input.substr(0,pivot)),
                 _tree(_input.substr(pivot+1,_input.length-pivot-1)));
-      }
     } else {
-      // "a b c" -> "a " | "b c"
+      // "abc" -> "a" | "bc" -> "abc"
       _left = _tree(_input.substr(0,pivot));
       _right = _tree(_input.substr(pivot,_input.length-pivot));
       return join_merge(_left, _right);
