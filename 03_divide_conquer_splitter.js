@@ -11,6 +11,10 @@
  * 8: ["a","bc","def","ghij","k","lmno"]
  */
 
+var isArray = function(obj) {
+  return obj.shift !== undefined;
+}
+
 var split = function (input) {
   
   var tree = function _tree(_input) {
@@ -19,14 +23,14 @@ var split = function (input) {
       var right_head="",result;
       // judge array or not
       // @todo better judge method
-      if(left.shift===undefined && right.shift===undefined) {
+      if(!isArray(left) && !isArray(right)) {
 	// "a", "b" -> "ab"
         return left+right;
-      } else if (left.shift===undefined && !(right.shift===undefined)) {
+      } else if (!isArray(left) && isArray(right)) {
 	// "a", ["b","c"] -> ["ab","c"]
         right[0]=left+right[0];
         return right;
-      } else if (!(left.shift===undefined) && right.shift===undefined) {
+      } else if (isArray(left) && !isArray(right)) {
 	// ["a","b"], "c" -> ["a","bc"]
         left[left.length-1]+=right;
         return left;
@@ -38,13 +42,13 @@ var split = function (input) {
         return result;
       }
     }, concat_merge = function(left,right) {
-      if(left.shift===undefined && right.shift===undefined) {
+      if(!isArray(left) && !isArray(right)) {
 	// "a", "b" -> "[a,b]"
         return [left,right];
-      } else if (left.shift===undefined && !(right.shift===undefined)) {
+      } else if (!isArray(left) && isArray(right)) {
 	// "a", ["b","c"] -> ["a","b","c"]
         return [left].concat(right);
-      } else if (!(left.shift===undefined) && right.shift===undefined) {
+      } else if (isArray(left) && !isArray(right)) {
 	// ["a","b"], "c" -> ["a","b","c"]
         left.push(right);
         return left;
@@ -59,11 +63,11 @@ var split = function (input) {
     }
 
     if (_input.charAt(pivot) === " ") {
-      if(pivot ===1 && _input.length===2) {
-        // "a " -> ["a",""]
+      if(pivot===1 && _input.length===2) {
+        // "a " -> "a"  ["a",""]
 	return [_tree(_input.substr(0,pivot)),""];
       } else {
-        // "a b" -> ["a","b"]
+        // "ab cd" -> ["ab","cd"] 
         return concat_merge(_tree(_input.substr(0,pivot)),
                 _tree(_input.substr(pivot+1,_input.length-pivot-1)));
       }
