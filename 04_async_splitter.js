@@ -1,20 +1,17 @@
-var worker = function () {
-  var result = [];
-  return function(chunk, flash) {
-    result = result.concat(chunk);
-    if (flash) {
-      console.log(result);
-    }
+var worker = function(chunk) {
+  return function(){
+    console.log(chunk); 
   };
 };
 
 var chunker = function () {
-  var _worker = worker(), chunksize=3,chunk_holder=[];
-  return function(input, flash) {
+  var chunksize=3,chunk_holder=[], chunk_i=0;
+  return function(input, flush) {
     // buffering
     chunk_holder.push(input);
-    if (flash || chunk_holder.length === chunksize){
-      _worker(chunk_holder, flash);
+    if (flush || chunk_holder.length === chunksize){
+      setTimeout(worker(chunk_holder), chunk_i*1000);
+      chunk_i += 1;
       chunk_holder=[];
     }
   };
@@ -22,17 +19,17 @@ var chunker = function () {
 
 var split = function(input) {
   var i=0, str="", _chunker=chunker();
-  for(;i<input.length; i+=1) {    
-    if (input.charAt(i)===" ") {      
+  for(;i<input.length; i+=1) {
+    if (input.charAt(i)===" ") {
       // async
-      setTimeout(_chunker(str), 1);
+      _chunker(str);
       str="";
     } else {      
       str+=input.charAt(i);
     }
   }
   // async
-  setTimeout(_chunker(str,true), 1);
+  _chunker(str,true);
 };
 
 split("a bc def ghij klmno pqrstu z");
