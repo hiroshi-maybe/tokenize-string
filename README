@@ -1,20 +1,13 @@
-These are my challenge for a problem "manually space splitter".
-// @see http://okada.hateblo.jp/entry/2011/11/29/152632
-
-My Answers are below:
+Reinvent the wheel: Splitting up a string with space.
+ http://okada.hateblo.jp/entry/2011/11/29/152632
 
 01_loop_splitter.js
- -> My first approach to solve the problem. (15 mins)
+ -> First approach to solve the problem. (15 mins)
 02_recursive_splitter.js
  -> Surely, loop algorithm can be converted to recursive one.
-    This is my second approach.
-    However, it took long time to design simple interface of the inner recursive function. (40 mins)
 03_divide_conquer_splitter.js
- -> I tried to solve by divide and conquer algorithm. This was so tough approach.
-    It took some hours to fix bugs. The code is not simple. (3 hours)
+ -> Divide and conquer algorithm. This was so tough approach.
 04_async_splitter.js
  -> This is a joke code:-)
-    In my project, to improve performance, we adopt buffering and asynchronous pattern.
-    This is a so much simple emulation of it.
 
-* I'm not sensitive for some cases, such as doubled space "a  b" should be ["a","","","b"] or ["a","","b"]
+* Not sensitive to some cases, such as doubled space "a  b" should be ["a","","","b"] or ["a","","b"]
