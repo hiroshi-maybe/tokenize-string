@@ -2,12 +2,12 @@ Reinvent the wheel: Splitting up a string with space.
  http://okada.hateblo.jp/entry/2011/11/29/152632
 
 01_loop_splitter.js
- -> First approach to solve the problem. (15 mins)
+ -> First approach to solve the problem.
 02_recursive_splitter.js
  -> Surely, loop algorithm can be converted to recursive one.
 03_divide_conquer_splitter.js
  -> Divide and conquer algorithm. This was so tough approach.
 04_async_splitter.js
- -> This is a joke code:-)
+ -> This is a joke code just to use asynchronous architecture.
 
 * Not sensitive to some cases, such as doubled space "a  b" should be ["a","","","b"] or ["a","","b"]
